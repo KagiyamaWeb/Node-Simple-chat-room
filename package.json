@@ -1,0 +1,16 @@
+{
+  "name": "schatroom",
+  "version": "1.0.0",
+  "description": "Chat room on Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.12.1",
+    "nodemon": "^2.0.2",
+    "ws": "^7.2.1"
+  }
+}
