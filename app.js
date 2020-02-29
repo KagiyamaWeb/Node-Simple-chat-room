@@ -1,29 +1,42 @@
-const status = document.getElementById('status');
-const messages = document.getElementById('messages');
-const form = document.getElementById('form');
-const input = document.getElementById('input');
+const express = require('express')
+const app = express()
 
-const ws = new WebSocket('ws://localhost:3000')
 
-function setStatus(value){
-    status.innerHTML = value;
-}
+//Sets the template engine ejs
+app.set('view engine', 'ejs')
 
-function printMessage(value){
-    const li = document.createElement('li');
+//Middleware
+app.use(express.static('public'))
 
-    li.innerHTML = value;
-    messages.appendChild(li);
-}
+//Routes
+app.get('/', (req, res) =>{
+    res.render('index')
+} )
 
-form.addEventListener('submit', e=>{
-    e.preventDefault();
-    ws.send(input.value);
-    input.value=''
+let PORT = 8000
+server = app.listen(PORT)
+
+const io = require("socket.io")(server)
+
+
+//Listen for a new connection
+io.on('connection', (socket) => {
+        console.log('New user connected')
+
+        socket.username = "Anonymous"
+
+    socket.on('change_username', (data) =>{
+        socket.username = data.username
+    })
+
+    //listen on new_message
+    socket.on('new_message', (data) => {
+        //broadcast the new message
+        io.sockets.emit('new_message', {message : data.message, username : socket.username});
+    })
+
+    //listen on typing
+    socket.on('typing', (data) => {
+    	socket.broadcast.emit('typing', {username : socket.username})
+    })
 })
-
-ws.onopen = () => setStatus('ONLINE')
-
-ws.onclose = () => setStatus('DISCONNECTED')
-
-ws.onmessage = res => printMessage(res.data)

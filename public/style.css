@@ -1,0 +1,140 @@
+/* body {
+    background-color: black;
+    color: rgb(112, 10, 160);
+    font-family: 'Consolas', monospace;
+  }
+  
+  header {
+    text-align: center;
+  }
+  
+  #messages {
+    margin-left: 1em;
+    list-style: none;
+  }
+  
+  #form {
+    display: flex;
+  }
+  
+  input, label {
+    display: block;
+  }
+  
+  input {
+    outline: none;
+    border: none;
+    background-color: black;
+    color: rgb(112, 10, 160);
+    padding: 1em .5em;
+    display: block;
+    font-size: 1.5em;
+    font-family: 'Consolas', monospace;
+    flex: 1;
+  }
+  
+  label {
+    display: block;
+    padding: 1em .5em;
+    font-size: 1.5em;
+  } */
+
+  @mixin vertical-align {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
+  * {
+      box-sizing: border-box;
+  }
+  
+  html {
+      height: 100%;
+  }
+  
+  body {
+      margin: 0px;
+      height: 100%;
+      background-color: black;
+      color: rgb(112, 10, 160);
+      font-family: 'Consolas', monospace;
+  }
+  
+  header {
+      text-align: center;
+  }
+  
+  h1 {
+      font-family: 'Consolas', monospace;
+      margin: 0px;
+  }
+  
+  div#change_username, section#input_zone {
+      border: 5px outset #8258FA;
+      background-color: black;
+  }
+  
+  div#change_username {
+      height: 3%;
+      display: inline-block;
+      background-color: #BCA9F5;
+  }
+  
+  section#chatroom {
+      border: 5px inset #8258FA;
+      height: 85%;
+      overflow: auto;
+  }
+  
+  section#input_zone {
+      height: 7%;
+      text-align: center;
+      background-color: #BCA9F5;
+  }
+  
+  .vertical-align {
+      position: relative;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+  }
+  
+  input#username {
+      font-family: 'Consolas', monospace;
+  }
+  
+  input#message {
+      display: inline-block;
+      width: 88%;
+      height: 70%;
+      font-family: 'Consolas', monospace;
+      font-size: 2vh;
+  }
+  
+  button#send_message {
+      display: inline-block;
+      height: 70%;
+      width: 10%;
+      
+  }
+  
+  p.message {
+      margin: 0px;
+      width: 100%;
+      height: 40px;
+      font-size: 2.5vh;
+      font-family: 'Consolas', monospace;
+      padding: 1vh;
+  }
+  
+  .message:nth-child(even) {
+      background-color: rgb(125, 131, 133);
+  }
+  
+  .message:nth-child(odd) {
+      background-color: rgb(199, 204, 209);
+  }
