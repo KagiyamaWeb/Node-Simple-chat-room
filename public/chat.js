@@ -1,18 +1,19 @@
 $(function(){
     //make connection
- var socket = io.connect('http://localhost:8000')
+ let socket = io.connect('http://localhost:8000')
 
  //buttons and inputs
- var message = $("#message")
- var username = $("#username")
- var send_message = $("#send_message")
- var send_username = $("#send_username")
- var chatroom = $("#chatroom")
- var feedback = $("#feedback")
+ const message = $("#message")
+ const username = $("#username")
+ const send_message = $("#send_message")
+ const send_username = $("#send_username")
+ const chatroom = $("#chatroom")
+ const feedback = $("#feedback")
 
  //Emit message
  send_message.click(function() {
-     socket.emit('new_message', {message : message.val()})
+     socket.emit('new_message', {message : message.val()}) 
+
  })
 
  //Listen on new_message
@@ -36,4 +37,5 @@ $(function(){
  socket.on('typing', (data) => {
      feedback.html("<p><i>" + data.username + " is typing a message..." + "</i></p>")
  })
-});
+})
+

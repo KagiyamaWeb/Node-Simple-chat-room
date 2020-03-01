@@ -10,7 +10,7 @@ app.use(express.static('public'))
 
 //Simple request time logger
 app.use(function(req, res, next) {
-    console.log("Middleware " + Date.now());
+    console.log("Middleware " + Date.now())
     console.log(req.url);
     
     //This function call is very important. It tells that more processing is
@@ -49,11 +49,12 @@ io.on('connection', (socket) => {
         socket.username = data.username
     })
 
+
     //listen on new_message
     socket.on('new_message', (data) => {
         hist.push({message : data.message, username : socket.username})
         //broadcast the new message
-        io.sockets.emit('new_message', {message : data.message, username : socket.username});
+        io.sockets.emit('new_message', {message : data.message, username : socket.username})
 
         
     })
@@ -67,6 +68,6 @@ io.on('connection', (socket) => {
 
 function send_hist (){
     hist.forEach(element => {
-        io.sockets.emit('new_message', element);
-    });
+        io.sockets.emit('new_message', element)
+    })
 }
