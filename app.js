@@ -21,13 +21,8 @@ app.use(function(req, res, next) {
 //Routes
 app.get('/', (req, res) =>{
     res.render('index')
+
 } )
-
-// app.get('/favicon.ico', (req, res) =>{
-//     res.sendFile(__dirname + '/favicon.ico')
-// } )
-
-//app.use(express.favicon("public/images/favicon.ico")); 
 
 let PORT = 8000
 server = app.listen(PORT)
@@ -38,11 +33,11 @@ const hist = []
 
 //Listen for a new connection
 io.on('connection', (socket) => {
-        console.log('New user connected')
+        console.log('New user connected. Socket id: ', socket.id)
 
 
         socket.username = "Anonymous"
-        send_hist()
+        send_hist(socket)
         
 
     socket.on('change_username', (data) => {
@@ -66,8 +61,8 @@ io.on('connection', (socket) => {
 
 })
 
-function send_hist (){
-    hist.forEach(element => {
-        io.sockets.emit('new_message', element)
-    })
-}
+ function send_hist (socket){
+     hist.forEach((element) => {
+         io.to(socket.id).emit('new_message', element)
+     })
+ }
