@@ -24,7 +24,7 @@ app.get('/', (req, res) =>{
 
 } )
 
-let PORT = 8000
+let PORT = 1337
 server = app.listen(PORT)
 
 const io = require("socket.io")(server)

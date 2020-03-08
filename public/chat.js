@@ -1,6 +1,6 @@
 $(function(){
     //make connection
- let socket = io.connect('http://localhost:8000')
+ let socket = io.connect('http://lab.sentirel.org:1337')
 
  //buttons and inputs
  const message = $("#message")
