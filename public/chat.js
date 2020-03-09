@@ -1,6 +1,7 @@
 $(function(){
     //make connection
  let socket = io.connect('https://lab.sentirel.org', {secure: true});
+ //let socket = io.connect(`http://localhost:1337`)
 
  console.log("connect")
 
@@ -20,6 +21,18 @@ $(function(){
 
  })
 
+ message.bind("enterKey", (e) => {
+     console.log('pressed enter')
+     socket.emit('new_message', {message : message.val()})
+ })
+
+ message.keyup(function(e){
+     if(e.keyCode == 13)
+     {
+         $(this).trigger("enterKey")
+     }
+ })
+
  //Listen on new_message
  socket.on("new_message", (data) => {
 
@@ -37,6 +50,20 @@ $(function(){
 
      socket.emit('change_username', {username : username.val()})
  })
+
+ username.bind("enterKey", (e) => {
+    console.log('pressed enter')
+    socket.emit('change_username', {username : username.val()})
+})
+
+username.keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey")
+    }
+})
+
+
 
  //Emit typing
  message.bind("keypress", () => {
