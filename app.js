@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
-var fs = require('fs')
-
+const mysql = require('mysql')
+const fs = require('fs')
+let config = require('./config.js')
+let connection = mysql.createConnection(config)
 
 //Sets the template engine ejs
 app.set('view engine', 'ejs')
@@ -40,13 +42,7 @@ const io = require("socket.io")(server)
 let obj = {
     hist: []
 };
-// obj.hist.push({username: 'test', message: 'test'})
 
-// let json = JSON.stringify(obj)
-//  fs.writeFile('public/logs.json', json, 'utf8', function(err) {
-//     if (err) throw err;
-//     console.log('complete');
-// })
 //Listen for a new connection
 io.on('connection', (socket) => {
         console.log('io event: connection')
@@ -72,25 +68,42 @@ io.on('connection', (socket) => {
         io.sockets.emit('new_message', {message : data.message, username : socket.username})
         var msg = data
 
-        fs.readFile('public/logs.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-            obj = JSON.parse(data); //now it an object
-            console.log(obj)
+        // fs.readFile('public/logs.json', 'utf8', function readFileCallback(err, data){
+        //     if (err){
+        //         console.log(err);
+        //     } else {
+        //     obj = JSON.parse(data); //now it an object
+        //     console.log(obj)
 
-            obj.hist.push({message : msg.message, username : socket.username});
-            console.log(obj) //add some data
-            json = JSON.stringify(obj); //convert it back to json
-            fs.writeFile('public/logs.json', json, 'utf8', (err) =>{
-                if (err){
-                    throw console.log(err);
+        //     obj.hist.push({message : msg.message, username : socket.username});
+        //     console.log(obj) 
+        //     json = JSON.stringify(obj); //convert it back to json
+        //     fs.writeFile('public/logs.json', json, 'utf8', (err) =>{
+        //         if (err){
+        //             throw console.log(err);
                     
-                }
-            }); // write it back 
-        }});
+        //         }
+        //     }); // write it back 
+        // }});
 
-        
+           //MySQL data upload
+           let config = require('./config.js');
+           let connection = mysql.createConnection(config);
+           // insert statment
+           let stmt = `INSERT INTO logs(username,message)
+                       VALUES(?,?)`;  
+           let inpt = [socket.username, msg.message];
+           
+           // execute the insert statment
+           connection.query(stmt, inpt, (err, results, fields) => {
+               if (err) {
+                   return console.error(err.message);
+    }
+           // get inserted id
+           console.log('Message Id:' + results.insertId);
+  });
+   
+           connection.end();
     })
 
     //listen on typing
@@ -105,18 +118,42 @@ io.on('connection', (socket) => {
  function send_hist (socket){
     console.log('send_hist()')
 
-    fs.readFile ('public/logs.json', 'utf8', function readFileCallback(err, data){
-        if (err){
-            console.log(err);
-        } else {
-        logs = JSON.parse(data);
-        logs.hist.forEach((element) => {
-            io.to(socket.id).emit('new_message', element);
-            ;})
-        }
+    // fs.readFile ('public/logs.json', 'utf8', function readFileCallback(err, data){
+    //     if (err){
+    //         console.log(err);
+    //     } else {
+    //     logs = JSON.parse(data);
+    //     logs.hist.forEach((element) => {
+    //         io.to(socket.id).emit('new_message', element);
+    //         ;})
+    //     }
 
         
         
-    }) //now it an object
+    // }) 
+
+    //Sending history to a single socket from MySQL
+    let config = require('./config.js');
+    let connection = mysql.createConnection(config);
+ 
+    let sql = `SELECT username, message FROM logs`;
+
+    connection.query(sql, (error, results, fields) => {
+      if (error) {
+          return console.error(error.message);
+  }
+
+    //console.log(results);
+    results.forEach(element => {
+        io.to(socket.id).emit('new_message', element);
+
+
+
+        
+    });
+
+});
+ 
+connection.end();
      
 }
