@@ -68,23 +68,6 @@ io.on('connection', (socket) => {
         io.sockets.emit('new_message', {message : data.message, username : socket.username})
         var msg = data
 
-        // fs.readFile('public/logs.json', 'utf8', function readFileCallback(err, data){
-        //     if (err){
-        //         console.log(err);
-        //     } else {
-        //     obj = JSON.parse(data); //now it an object
-        //     console.log(obj)
-
-        //     obj.hist.push({message : msg.message, username : socket.username});
-        //     console.log(obj) 
-        //     json = JSON.stringify(obj); //convert it back to json
-        //     fs.writeFile('public/logs.json', json, 'utf8', (err) =>{
-        //         if (err){
-        //             throw console.log(err);
-                    
-        //         }
-        //     }); // write it back 
-        // }});
 
            //MySQL data upload
            let config = require('./config.js');
@@ -117,20 +100,6 @@ io.on('connection', (socket) => {
 
  function send_hist (socket){
     console.log('send_hist()')
-
-    // fs.readFile ('public/logs.json', 'utf8', function readFileCallback(err, data){
-    //     if (err){
-    //         console.log(err);
-    //     } else {
-    //     logs = JSON.parse(data);
-    //     logs.hist.forEach((element) => {
-    //         io.to(socket.id).emit('new_message', element);
-    //         ;})
-    //     }
-
-        
-        
-    // }) 
 
     //Sending history to a single socket from MySQL
     let config = require('./config.js');
