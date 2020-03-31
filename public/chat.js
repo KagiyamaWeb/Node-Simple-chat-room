@@ -1,6 +1,5 @@
 $(function(){
     //make connection
- //let socket = io.connect('https://lab.sentirel.org', {secure: true});
  let socket = io.connect(`http://localhost:1337`)
 
  console.log("connect")
